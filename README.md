@@ -2,7 +2,7 @@
 
 
 ## Preview 
-![](<img width="1683" height="784" alt="image" src="https://github.com/user-attachments/assets/5b74ab74-e4d1-4bd1-aaa2-ebb69cb98088" />)
+![](https://github.com/user-attachments/assets/5b74ab74-e4d1-4bd1-aaa2-ebb69cb98088)
 
 A complete inventory system for FiveM, implementing items, weapons, shops, and more without any strict framework dependency.
 
