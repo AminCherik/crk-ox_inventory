@@ -1,4 +1,4 @@
-# ox_inventory redesigend by me (not yet)
+# ox_inventory redesigend by me for NoxRP
 
 A complete inventory system for FiveM, implementing items, weapons, shops, and more without any strict framework dependency.
 
