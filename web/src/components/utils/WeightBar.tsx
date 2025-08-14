@@ -14,22 +14,30 @@ const colorMixer = (rgbA: number[], rgbB: number[], amountToMix: number) => {
 };
 
 const COLORS = {
-  // Colors used - https://materialui.co/flatuicolors
-  primaryColor: [231, 76, 60], // Red (Pomegranate)
-  secondColor: [39, 174, 96], // Green (Nephritis)
-  accentColor: [211, 84, 0], // Orange (Oragne)
+  // Server Purple Theme Colors
+  primaryColor: [174, 62, 201], // Server Purple (#ae3ec9)
+  secondColor: [108, 75, 123], // Darker Purple for gradients
+  accentColor: [139, 91, 166], // Light Purple accent
+  dangerColor: [231, 76, 60], // Red for high usage/low durability
+  healthColor: [46, 204, 113], // Green for good status
 };
 
 const WeightBar: React.FC<{ percent: number; durability?: boolean }> = ({ percent, durability }) => {
   const color = useMemo(
-    () =>
-      durability
-        ? percent < 50
-          ? colorMixer(COLORS.accentColor, COLORS.primaryColor, percent / 100)
-          : colorMixer(COLORS.secondColor, COLORS.accentColor, percent / 100)
-        : percent > 50
-        ? colorMixer(COLORS.primaryColor, COLORS.accentColor, percent / 100)
-        : colorMixer(COLORS.accentColor, COLORS.secondColor, percent / 50),
+    () => {
+      if (durability) {
+        // Durability: Green when high, red when low
+        if (percent > 70) return `rgb(${COLORS.healthColor[0]}, ${COLORS.healthColor[1]}, ${COLORS.healthColor[2]})`;
+        if (percent > 30) return colorMixer(COLORS.dangerColor, COLORS.healthColor, percent / 100);
+        return `rgb(${COLORS.dangerColor[0]}, ${COLORS.dangerColor[1]}, ${COLORS.dangerColor[2]})`;
+      } else {
+        // Weight: Green when light, red when heavy
+        if (percent < 30) return `rgb(${COLORS.healthColor[0]}, ${COLORS.healthColor[1]}, ${COLORS.healthColor[2]})`; // Green when light
+        if (percent < 60) return colorMixer(COLORS.healthColor, COLORS.primaryColor, (percent - 30) / 30); // Green to Purple
+        if (percent < 80) return colorMixer(COLORS.primaryColor, COLORS.dangerColor, (percent - 60) / 20); // Purple to Red  
+        return `rgb(${COLORS.dangerColor[0]}, ${COLORS.dangerColor[1]}, ${COLORS.dangerColor[2]})`; // Red when heavy
+      }
+    },
     [durability, percent]
   );
 

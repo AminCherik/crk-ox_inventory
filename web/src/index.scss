@@ -1,11 +1,30 @@
-$mainColor: #22232c;
-$textColor: #c1c2c5;
-$mainFont: Roboto;
+// Server Purple Theme with Gray Backgrounds
+$serverPurple: #ae3ec9;
+$darkGray: #1e1e1e;
+$mediumGray: #2a2a2a;
+$lightGray: #3a3a3a;
+$slotGray: #2c2c2c;
+$borderGray: #404040;
 
-$secondaryColor: rgba(12, 12, 12, 0.4);
-$secondaryColorHighlight: #33343F;
-$secondaryColorLight: rgba(0, 0, 0, 0.5);
-$secondaryColorDark: rgba(12, 12, 12, 0.8);
+$mainColor: $darkGray;
+$textColor: #e0e0e0;
+$mainFont: 'Inter', 'Segoe UI', Roboto, sans-serif;
+
+$secondaryColor: $slotGray;
+$secondaryColorHighlight: $lightGray;
+$secondaryColorLight: rgba(44, 44, 44, 0.5);
+$secondaryColorDark: rgba(30, 30, 30, 0.95);
+
+// Modern gradients with server purple
+$gradientPrimary: linear-gradient(135deg, $darkGray 0%, $mediumGray 100%);
+$gradientSecondary: linear-gradient(135deg, $slotGray 0%, $lightGray 100%);
+$gradientPurple: linear-gradient(135deg, rgba(174, 62, 201, 0.8) 0%, rgba(174, 62, 201, 0.6) 100%);
+
+// Modern shadows with purple accent
+$shadowSmall: 0 2px 8px rgba(0, 0, 0, 0.3);
+$shadowMedium: 0 4px 16px rgba(0, 0, 0, 0.4);
+$shadowLarge: 0 8px 32px rgba(0, 0, 0, 0.5);
+$shadowPurple: 0 0 16px rgba(174, 62, 201, 0.3);
 
 $gridCols: 5;
 $gridRows: 5;
@@ -58,21 +77,21 @@ input[type='number']::-webkit-outer-spin-button {
 
 .context-menu-list {
   min-width: 200px;
-  background-color: $mainColor;
+  background: $gradientPrimary;
   color: $textColor;
-  padding: 4px;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: inset;
-  border-width: 1px;
-  border-radius: 4px;
+  padding: 6px;
+  border: 1px solid $borderGray;
+  border-radius: 12px;
   outline: none;
   display: flex;
   flex-direction: column;
+  box-shadow: $shadowLarge, 0 0 20px rgba(174, 62, 201, 0.15);
+  gap: 2px;
 }
 
 .context-menu-item  {
-  padding: 8px;
-  border-radius: 4px;
+  padding: 12px 16px;
+  border-radius: 8px;
   background-color: transparent;
   outline: none;
   border: none;
@@ -80,12 +99,29 @@ input[type='number']::-webkit-outer-spin-button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: $mainFont;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  
   &:active {
-    transform: none;
+    transform: translateY(1px);
   }
+  
   &:hover {
-    background-color: $secondaryColorHighlight;
+    background: $gradientPurple;
+    color: white;
     cursor: pointer;
+    transform: translateY(-1px);
+    box-shadow: $shadowSmall, 0 0 8px rgba(174, 62, 201, 0.3);
+  }
+  
+  &:first-child {
+    margin-top: 0;
+  }
+  
+  &:last-child {
+    margin-bottom: 0;
   }
 }
 
@@ -121,8 +157,30 @@ button:active {
   justify-content: center;
   align-items: center;
   height: 100%;
-
-  gap: 20px;
+  gap: 30px;
+  perspective: 1000px;
+  
+  // Left inventory (player) - skew right slightly
+  > div:first-child {
+    transform: perspective(1000px) rotateY(2deg) rotateX(-1deg);
+    transform-origin: center right;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02);
+    }
+  }
+  
+  // Right inventory (external) - skew left slightly
+  > div:last-child {
+    transform: perspective(1000px) rotateY(-2deg) rotateX(-1deg);
+    transform-origin: center left;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02);
+    }
+  }
 }
 
 .inventory-control {
@@ -134,59 +192,86 @@ button:active {
     gap: 20px;
     justify-content: center;
     align-items: center;
+    background: $gradientPrimary;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid $borderGray;
+    box-shadow: $shadowMedium;
   }
 
   .inventory-control-input {
-    transition: 200ms;
-    padding: 16px 8px;
-    border-radius: 2.5%;
+    transition: all 0.3s ease;
+    padding: 16px 12px;
+    border-radius: 12px;
     font-family: $mainFont;
     font-size: 16px;
     text-align: center;
     outline: none;
-    border: none;
-    color: #fff;
-    background-color: $secondaryColor;
-    &:focus-within {
-      background-color: $secondaryColorDark;
+    border: 1px solid $borderGray;
+    color: $textColor;
+    background: $slotGray;
+    box-shadow: $shadowSmall;
+    
+    &:focus {
+      background: $lightGray;
+      border-color: $serverPurple;
+      box-shadow: $shadowMedium, $shadowPurple;
+    }
+    
+    &::placeholder {
+      color: rgba(224, 224, 224, 0.5);
     }
   }
 
   .inventory-control-button {
     font-size: 14px;
-    color: #fff;
-    background-color: $secondaryColor;
-    transition: 200ms;
-    padding: 12px 8px;
-    border-radius: 2.5%;
-    border: none;
+    color: $textColor;
+    background: $gradientSecondary;
+    transition: all 0.3s ease;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid $borderGray;
     text-transform: uppercase;
     font-family: $mainFont;
     width: 100%;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: $shadowSmall;
+    cursor: pointer;
+    
     &:hover {
-      background-color: $secondaryColorDark;
+      background: $gradientPurple;
+      border-color: $serverPurple;
+      box-shadow: $shadowMedium, $shadowPurple;
+      transform: translateY(-2px);
+      color: white;
+    }
+    
+    &:active {
+      transform: translateY(0px);
     }
   }
 }
 
 .useful-controls-dialog {
-  background-color: $mainColor;
+  background: $gradientPrimary;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: $textColor;
-  width: 450px;
+  width: 480px;
   display: flex;
   flex-direction: column;
-  padding: 16px;
-  border-radius: 4px;
-  gap: 16px;
+  padding: 0;
+  border-radius: 16px;
+  border: 1px solid $borderGray;
+  box-shadow: $shadowLarge, 0 0 40px rgba(174, 62, 201, 0.2);
+  overflow: hidden;
 }
 
 .useful-controls-dialog-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .useful-controls-dialog-title {
@@ -195,20 +280,52 @@ button:active {
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px;
+  margin: 0;
+  background: linear-gradient(135deg, $serverPurple 0%, rgba(174, 62, 201, 0.8) 100%);
+  border-bottom: 2px solid rgba(174, 62, 201, 0.6);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  position: relative;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, $serverPurple 50%, transparent 100%);
+    opacity: 0.8;
+  }
 }
 
 .useful-controls-dialog-close {
-  width: 25px;
-  height: 25px;
-  padding: 6px;
+  width: 20px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 4px;
-  fill: $textColor;
+  fill: white;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+  margin-right: 25px;
   &:hover {
-    background-color: $secondaryColorHighlight;
+    background: rgba(231, 76, 60, 0.8);
+    border-color: rgba(231, 76, 60, 1);
     cursor: pointer;
+  }
+  
+  svg {
+    width: 8px;
+    height: 8px;
   }
 }
 
@@ -216,32 +333,65 @@ button:active {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 
 .divider {
   width: 100%;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.12);
+  background: linear-gradient(90deg, transparent 0%, rgba(174, 62, 201, 0.3) 50%, transparent 100%);
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    right: 25%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, $serverPurple 50%, transparent 100%);
+  }
 }
 
 .useful-controls-button {
-  position: absolute !important;
-  bottom: 25px;
-  right: 25px;
-  transition: 200ms !important;
-  border: none;
-  color: white;
-  width: 52px;
-  height: 52px;
+  font-size: 14px;
+  color: $textColor;
+  background: $gradientSecondary;
+  transition: all 0.3s ease;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid $borderGray;
+  text-transform: uppercase;
+  font-family: $mainFont;
+  width: 100%;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: $shadowSmall;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   fill: white;
-  border-radius: 5% !important;
-  background-color: $secondaryColor !important;
+  
   &:hover {
-    background-color: $secondaryColorDark !important;
-    cursor: pointer;
+    background: $gradientPurple;
+    border-color: $serverPurple;
+    box-shadow: $shadowMedium, $shadowPurple;
+    transform: translateY(-2px);
+    color: white;
+  }
+  
+  &:active {
+    transform: translateY(0px);
+  }
+  
+  svg {
+    width: 1.5em;
+    height: 1.5em;
   }
 }
 
@@ -261,13 +411,62 @@ button:active {
   display: flex;
   flex-direction: column;
   gap: calc($gridGap * 2);
+  background: $gradientPrimary;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid $borderGray;
+  box-shadow: $shadowMedium;
+  position: relative;
 }
+
 .inventory-grid-header-wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  margin: -20px -20px 16px -20px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, $serverPurple 0%, rgba(174, 62, 201, 0.8) 100%);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  border-bottom: 2px solid rgba(174, 62, 201, 0.6);
+  box-shadow: 0 2px 12px rgba(174, 62, 201, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, $serverPurple 50%, transparent 100%);
+    opacity: 0.8;
+  }
+  
   p {
     font-size: 16px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    margin: 0;
+    letter-spacing: 0.5px;
+    
+    &:first-child {
+      font-size: 18px;
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    }
+    
+    &:last-child {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
   }
 }
 
@@ -276,34 +475,43 @@ button:active {
   height: $containerSize;
   grid-template-columns: repeat($gridCols, $gridSize);
   grid-auto-rows: $gridSize + 0.22vh;
-  gap: $gridGap;
+  gap: calc($gridGap * 2);
   overflow-y: scroll;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(30, 30, 30, 0.5);
 }
 
 // inventory slots
 .inventory-slot {
-  background-color: $secondaryColor;
+  background: $gradientSecondary;
   background-repeat: no-repeat;
   background-position: center;
-  border-radius: 2.5%;
+  border-radius: 12px;
   image-rendering: -webkit-optimize-contrast;
   position: relative;
   background-size: 7vh;
   color: $textColor;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: inset;
-  border-width: 1px;
+  border: 1px solid $borderGray;
+  box-shadow: $shadowSmall;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  
+  &:hover {
+    border-color: $serverPurple;
+    box-shadow: $shadowMedium, $shadowPurple;
+    transform: translateY(-2px);
+  }
 }
 
 .inventory-slot-label-box {
-  background-color: $mainColor;
-  color: $textColor;
+  background: linear-gradient(135deg, $serverPurple 0%, rgba(174, 62, 201, 0.8) 100%);
+  color: white;
   text-align: center;
-  border-bottom-left-radius: 0.25vh;
-  border-bottom-right-radius: 0.25vh;
-  border-top-color: rgba(0, 0, 0, 0.2);
-  border-top-style: inset;
-  border-top-width: 1px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border-top: 1px solid rgba(174, 62, 201, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 8px rgba(174, 62, 201, 0.3);
 }
 
 .inventory-slot-label-text {
@@ -311,21 +519,30 @@ button:active {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 2px 3px;
-  font-weight: 400;
+  padding: 4px 6px;
+  font-weight: 600;
   font-family: $mainFont;
-  font-size: 12px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  color: white;
 }
 
 .inventory-slot-number {
-  background-color: white;
-  color: black;
-  height: 12px;
-  border-top-left-radius: 0.25vh;
-  border-bottom-right-radius: 0.25vh;
-  padding: 3px;
-  font-size: 12px;
+  background: $serverPurple;
+  color: white;
+  height: 16px;
+  min-width: 16px;
+  border-radius: 6px;
+  padding: 2px 4px;
+  font-size: 10px;
   font-family: $mainFont;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadowSmall;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .item-slot-wrapper {
@@ -387,20 +604,21 @@ button:active {
 .tooltip-wrapper {
   pointer-events: none;
   display: flex;
-  background-color: $mainColor;
+  background: $gradientPrimary;
   width: 200px;
-  padding: 8px;
+  padding: 12px;
   flex-direction: column;
   min-width: 200px;
   color: $textColor;
   font-family: $mainFont;
-  border-radius: 4px;
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: inset;
-  border-width: 1px;
+  border-radius: 12px;
+  border: 1px solid $borderGray;
+  box-shadow: $shadowLarge, 0 0 20px rgba(174, 62, 201, 0.15);
+  
   p {
     font-size: 12px;
     font-weight: 400;
+    line-height: 1.4;
   }
 }
 
@@ -447,17 +665,29 @@ button:active {
 .hotbar-container {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 8px;
   justify-content: center;
   width: 100%;
   position: absolute;
   bottom: 2vh;
+  background: rgba(30, 30, 30, 0.8);
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: 1px solid $borderGray;
+  box-shadow: $shadowLarge;
 }
 
 .hotbar-item-slot {
   @extend .inventory-slot;
   width: $gridSize;
   height: $gridSize;
+  border: 2px solid $borderGray;
+  
+  &:hover {
+    border-color: $serverPurple;
+    box-shadow: $shadowMedium, $shadowPurple;
+    transform: translateY(-3px) scale(1.05);
+  }
 }
 
 .hotbar-slot-header-wrapper {
@@ -504,17 +734,44 @@ button:active {
 }
 
 .durability-bar {
-  background: rgba(0, 0, 0, 0.5);
-  height: 3px;
+  background: $slotGray;
+  height: 4px;
+  border-radius: 8px;
   overflow: hidden;
+  border: 1px solid $borderGray;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  
+  div {
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(174, 62, 201, 0.4);
+  }
 }
 
 .weight-bar {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px inset rgba(0, 0, 0, 0.1);
-  height: 0.8vh;
-  border-radius: 5%;
+  background: $slotGray;
+  border: 1px solid $borderGray;
+  height: 1.2vh;
+  border-radius: 10px;
   overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  
+  div {
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(174, 62, 201, 0.4);
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
+      border-radius: 10px 10px 0 0;
+    }
+  }
 }
 
 .transition-fade-enter {
